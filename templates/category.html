@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+    {% if category %}
+        {{ category.description|truncatewords:155 }}
+    {% else %}
+        Welcome to My cart where you can buy unique collections of your choice.
+    {% endif %}
+{% endblock %}
+
+{% block title %}
+    {% if category %}
+        {{ category.name }} - My cart
+    {% else %}
+        See our new collections - My cart
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% if category %}
+    <div>
+        <div class="row my_row_class">
+            <div class="mx-auto">
+
+            <P><a href="{% url 'shop:allProdCat' %}">Our product collections</a></P>
+        </div>
+            </div>
+    </div>
+    {% endif %}
+<div class="mx_auto">
+    {% if category %}
+    <img class="my_image my_image_padding" src="{{category.image.url}}" alt="{{category.name}}">
+</div>
+    <br>
+<div class="container">
+    <div class="row mx-auto">
+        <div>
+            <h1 class="text-center my_title">{{category.name}}</h1>
+            <p class="text-justify">{{category.description}}</p>
+        </div>
+    </div>
+</div>
+    {% else %}
+<div>
+<center><img class="my_image my_image_padding" src="{% static 'img/banner.png' %}" alt="our products"></center>
+</div>
+<br>
+<div class="" >
+
+    <h1 class="text-center my_title"> Our products collection</h1>
+    <p class="text-justify">Etiam vitae venenatis sapien. Nam quam lectus, auctor eget dapibus ut, tincidunt ac justo. Quisque dictum dui ac hendrerit feugiat. Suspendisse molestie lorem nec tortor tempor ornare. Quisque vulputate fermentum sagittis. Proin nisl felis, viverra at felis in, dictum gravida magna. Mauris nulla nunc, fringilla non posuere vitae, pellentesque vel quam. Donec tristique erat rutrum lectus lacinia, ut suscipit libero hendrerit. Vestibulum ultricies nisl egestas diam dapibus, in auctor est interdum. Nunc erat magna, commodo vitae velit sed, vehicula dictum odio. Nullam velit mi, finibus et ullamcorper id, tincidunt ac lectus. Aenean at sagittis dolor, nec facilisis erat. Nunc vulputate eu sem sit amet sagittis. Maecenas volutpat, diam nec hendrerit malesuada, ligula erat vulputate arcu, at posuere diam diam non purus. Proin tincidunt magna eget mauris interdum vestibulum in sit amet arcu. Aenean sed pulvinar dui, eu aliquet leo</p>
+
+</div>
+    {% endif %}
+<div class="container">
+    <div class="row mx-auto">
+        {% for product in products.object_list %}
+        <div class="my_bottom_margin col-9 col-sm-12 col-md-4 col-lg-4" >
+            <div class="card text-center" style="min-width:18rem;">
+                <a href="{{product.get_url}}"><img class="card-img-top my_image" src="{{product.image.url}}" alt="{{product.name}}"> </a>
+
+            <div class="card-body">
+               <h4>{{product.name}}</h4>
+                <p>{{product.price}}</p>
+            </div>
+            </div><br>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="mx-auto">
+        {% if products.paginator.num_pages > 1 %}
+
+        <hr>
+        <div class="text-center">
+            {% for pg in products.paginator.page_range %}
+            <a href="?page={{pg}}" class="btn btn-light btn-sm {% if products.number == pg %} active {% endif %}">{{pg}}</a>
+            {% endfor %}
+
+        </div>
+        {% endif %}
+    </div>
+    <br>
+</div>
+{% endblock %}
